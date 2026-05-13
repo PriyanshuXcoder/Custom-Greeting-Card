@@ -1,188 +1,125 @@
-# WishCraft — Custom Greetings & Wishes App
+# WishCraft — Personalized Greetings & Wishes
 
-A full-stack MERN application where users can browse personalized greeting templates, overlay their own photo and name in real-time, and download or share the result.
+Welcome to **WishCraft**, a full-stack MERN application that allows users to create beautifully customized greeting cards by instantly overlaying their photo and name onto premium templates.
 
----
-
-## Features
-
-- 🔐 JWT Authentication (Register / Login / Guest)
-- 👤 Profile setup with photo upload
-- 🎨 14+ greeting templates across 8 categories
-- 🖼️ **Live personalized preview** — your photo + name overlaid on every card
-- 🔒 Premium templates with subscription modal
-- ⬇️ Download as PNG (html2canvas)
-- 🔗 Native Share API
-- 🔍 Search + category filter
-- 🔥 Trending section
+This application is built for seamless local development, featuring an auto-configured **in-memory database** that requires zero setup to get started!
 
 ---
 
-## Tech Stack
+## 🚀 Features
 
-| Layer     | Technology                             |
-|-----------|----------------------------------------|
-| Frontend  | React 18, Vite, Tailwind CSS v4        |
-| Backend   | Node.js, Express.js                    |
-| Database  | MongoDB Atlas + Mongoose               |
-| Auth      | JWT (stored in localStorage)           |
-| Upload    | Multer (disk storage)                  |
-| Export    | html2canvas                            |
-| Notifs    | react-hot-toast                        |
+- **Guest Login Available**: Instantly test the app without registering using the auto-seeded Guest account.
+- **Dynamic Image Generation**: Uses `html2canvas` to render personalized text and profile images directly onto a canvas, which can be downloaded instantly.
+- **Categorized Templates**: Browse 20+ templates (Free & Premium) across categories like Birthday, Wedding, Festival, Diwali, Eid, Christmas, Anniversary, and more!
+- **Auto-Seeding Database**: Starts up with an in-memory MongoDB database and auto-populates it with templates and users so you don't have to manually seed anything.
+- **Full Authentication**: Secure JWT-based authentication for registering and logging into real accounts.
+- **Responsive Design**: Beautiful UI built from scratch using Tailwind CSS.
 
 ---
 
-## Project Structure
+## 🛠️ Tech Stack
 
-```
-greetings-app/
-├── client/                  # React frontend (Vite)
-│   └── src/
-│       ├── api/             # Axios instance
-│       ├── components/      # Navbar, TemplateCard, PremiumModal, ProtectedRoute
-│       ├── context/         # AuthContext (Context API)
-│       ├── pages/           # Home, Login, Register, Profile, TemplateDetail
-│       └── App.jsx
-│
-└── server/                  # Express backend
-    ├── config/              # db.js, seedTemplates.js
-    ├── controllers/         # authController, templateController, userController
-    ├── middleware/          # authMiddleware, uploadMiddleware
-    ├── models/              # User.js, Template.js
-    ├── routes/              # authRoutes, templateRoutes, userRoutes
-    ├── uploads/             # uploaded profile images
-    └── index.js
+### Frontend
+- **Framework**: React 18 (Vite)
+- **Styling**: Tailwind CSS
+- **Routing**: React Router DOM
+- **Image Processing**: `html2canvas` for client-side rendering and exporting
+
+### Backend
+- **Framework**: Node.js & Express.js
+- **Database**: MongoDB (Mongoose) + `mongodb-memory-server` for instant local development
+- **Authentication**: JWT (JSON Web Tokens) & `bcryptjs`
+- **File Uploads**: `multer` for handling profile picture uploads
+
+---
+
+## 💻 Full Setup Instructions
+
+Because this project is configured with an in-memory fallback database, you do **not** need to set up a real MongoDB cluster to test it locally. It works right out of the box!
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/PriyanshuXcoder/Custom-Greeting-Card.git
+cd Custom-Greeting-Card
 ```
 
----
+### 2. Backend Setup & Run
 
-## Getting Started
-
-### Prerequisites
-- Node.js 18+
-- MongoDB Atlas account (free tier works)
-
-### 1. Backend setup
+Open a terminal and navigate to the `server` directory:
 
 ```bash
 cd server
-cp .env.example .env
-# Fill in your MONGO_URI and JWT_SECRET in .env
 npm install
-npm run dev
 ```
 
-### 2. Seed the database
+Start the backend server:
 
 ```bash
-cd server
-node config/seedTemplates.js
+npm run dev
+# OR
+node index.js
 ```
 
-### 3. Frontend setup
+> **Note**: The backend will automatically detect that no real MongoDB URI is provided and will spin up an **in-memory database**. It will then automatically seed the Guest user and all the templates.
+
+### 3. Frontend Setup & Run
+
+Open a **new** terminal window and navigate to the `client` directory:
 
 ```bash
 cd client
-cp .env.example .env
 npm install
+```
+
+Start the Vite development server:
+
+```bash
 npm run dev
 ```
 
-App runs at **http://localhost:5173**
+The app will now be running at **http://localhost:5173**. 
 
 ---
 
-## API Endpoints
+## 🌍 Connecting a Real Database (Optional)
 
-| Method | Route                 | Auth     | Description              |
-|--------|-----------------------|----------|--------------------------|
-| POST   | /api/auth/register    | No       | Create account           |
-| POST   | /api/auth/login       | No       | Login                    |
-| GET    | /api/auth/me          | Yes      | Get current user         |
-| GET    | /api/templates        | No       | List templates           |
-| GET    | /api/templates/:id    | No       | Single template          |
-| POST   | /api/templates        | Yes      | Create template (admin)  |
-| PUT    | /api/user/profile     | Yes      | Update name + photo      |
+If you want your users and data to persist after you stop the server, you can connect a real MongoDB database:
+
+1. Go to `server/.env` (or create one by copying `server/.env.example`)
+2. Replace the `MONGO_URI` with your actual MongoDB connection string (e.g., from MongoDB Atlas):
+   ```env
+   MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/greetings-app
+   ```
+3. Restart the backend. The app will automatically detect the real URI, connect to it, and seed your live database with the default templates.
 
 ---
 
-## Environment Variables
+## 📂 Project Structure
 
-**server/.env**
+```text
+Custom-Greeting-Card/
+├── client/                  # React Frontend
+│   ├── src/
+│   │   ├── api/             # Axios API config
+│   │   ├── components/      # Reusable UI components
+│   │   ├── context/         # AuthContext
+│   │   ├── pages/           # Application Routes
+│   │   └── App.jsx          # Main App Component
+│   └── vite.config.js       # Vite Configuration
+│
+└── server/                  # Node.js Backend
+    ├── config/              # Database connection logic
+    ├── controllers/         # Route business logic
+    ├── middleware/          # JWT Auth & Upload Middlewares
+    ├── models/              # Mongoose Schemas (User, Template)
+    ├── routes/              # Express API Routes
+    ├── seeder.js            # Auto-injection script for templates
+    └── index.js             # Server Entry Point
 ```
-PORT=5000
-MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/greetings-app
-JWT_SECRET=your_secret_here
-NODE_ENV=development
-```
-
-**client/.env**
-```
-VITE_API_URL=http://localhost:5000
-```
 
 ---
 
-## Deployment
+## 🤝 Contributing
 
-### Backend (Render)
-1. Push `server/` folder to GitHub
-2. Create a new **Web Service** on Render
-3. Build command: `npm install`
-4. Start command: `npm start`
-5. Add environment variables (MONGO_URI, JWT_SECRET, NODE_ENV=production)
-
-### Frontend (Vercel)
-1. Push `client/` folder to GitHub
-2. Import on Vercel, framework: **Vite**
-3. Set env variable: `VITE_API_URL=https://your-render-backend.onrender.com`
-4. Update CORS origin in `server/index.js` to your Vercel URL
-
----
-
-## MongoDB Atlas Setup
-
-1. Go to https://cloud.mongodb.com
-2. Create a free M0 cluster
-3. Add a database user (remember password)
-4. Whitelist IP: `0.0.0.0/0` (for Render)
-5. Click **Connect → Connect your application**
-6. Copy the connection string and add to `.env`
-7. Run `node config/seedTemplates.js` to populate templates
-
----
-
-## Interview Talking Points
-
-1. **Why MERN?** — Popular, JavaScript end-to-end, easy to learn and scale
-2. **Why Vite?** — Faster dev server than CRA, native ESM support
-3. **JWT vs Sessions** — Stateless auth, works well with mobile apps too
-4. **Overlay logic** — Each template stores its own `profilePosition` and `namePosition` as percentage-based values, making overlays responsive to any card size
-5. **html2canvas** — Captures the DOM node including CSS overlays into a canvas, then downloads as PNG
-6. **Context API** — Simpler than Redux for auth state; avoids prop drilling
-7. **Multer** — Handles multipart/form-data, saves images to server disk (could be extended to S3)
-
----
-
-## Known Limitations & Future Improvements
-
-- [ ] Cloud image storage (AWS S3 or Cloudinary) instead of local disk
-- [ ] Real Razorpay/Stripe payment integration for premium
-- [ ] Admin dashboard to add/edit templates
-- [ ] Image compression before upload
-- [ ] Email verification on register
-- [ ] Dark mode
-- [ ] More template customization (background color, stickers)
-- [ ] Template favorites / saved cards
-
----
-
-## Common Issues
-
-| Issue | Fix |
-|-------|-----|
-| CORS error | Make sure backend CORS origin matches frontend URL exactly |
-| Images not loading on download | Add `crossOrigin="anonymous"` to all `<img>` tags |
-| "Token invalid" after restart | JWT_SECRET changed — clear localStorage and login again |
-| Multer "file too large" | Client already checks 2MB but server limit is also 2MB |
-| Templates not showing | Run `node config/seedTemplates.js` first |
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
